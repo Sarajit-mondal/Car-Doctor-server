@@ -36,6 +36,7 @@ const client = new MongoClient(uri, {
 // database calaction
 const database = client.db("Car-Services")
 const serviceCollection = database.collection('service')
+const allOrderCollection = database.collection('allOrder')
 
 async function run() {
   try {
@@ -46,6 +47,22 @@ app.get("/service",async(req,res)=>{
  const result = await serviceCollection.find().toArray()
  res.send(result)
 })
+
+// all Orders
+app.post('/allOrder',async (req,res)=>{
+  const item = req.body;
+  const doc ={
+    serviceName :item.servicename,
+    serviceType :item.serviceType,
+    servicePrice :item.servicePrice,
+    description :item.description,
+    date : item.date,
+    email : item.email
+  }
+  const result = await allOrderCollection.insertOne(doc)
+  res.send(result)
+})
+
 //    service 
     
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
